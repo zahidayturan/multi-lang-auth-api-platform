@@ -1,32 +1,50 @@
 package com.example.auth.controller;
 
+import com.example.auth.model.dto.AuthResponseDTO;
+import com.example.auth.model.dto.UserDTO;
 import com.example.auth.model.User;
-import com.example.auth.service.AuthService;
+import com.example.auth.security.JwtTokenProvider;
+import com.example.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+@Validated
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
-    private AuthService authService;
+    private AuthenticationManager authenticationManager;
 
-    @PostMapping("/signup")
-    public String signup(@RequestBody User user) {
-        return authService.signup(user);
-    }
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        return authService.login(user);
+    public AuthResponseDTO authenticateUser(@Validated @RequestBody UserDTO loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        String token = tokenProvider.generateToken(authentication);
+        return new AuthResponseDTO(token);
     }
 
-    @GetMapping("test")
-    public String test(@RequestParam(required = false) String param) {
-        return "Test Message: " + (param != null ? param : "No param provided");
+    @PostMapping("/register")
+    public User registerUser(@Validated @RequestBody UserDTO signUpRequest) {
+        User user = new User();
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(signUpRequest.getPassword());
+        return userService.saveUser(user);
     }
 }
-
-
