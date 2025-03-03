@@ -1,5 +1,7 @@
 package com.example.auth.config;
 
+import com.example.auth.exception.CustomAccessDeniedHandler;
+import com.example.auth.exception.JwtAuthenticationEntryPoint;
 import com.example.auth.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +23,6 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -32,9 +33,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(requests -> requests
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated())
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -46,3 +51,4 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
+

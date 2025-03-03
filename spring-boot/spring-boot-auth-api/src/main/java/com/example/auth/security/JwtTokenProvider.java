@@ -2,10 +2,11 @@ package com.example.auth.security;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.util.Date;
 
 @Component
@@ -17,6 +18,11 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    private Key getSigningKey() {
+        byte[] keyBytes = jwtSecret.getBytes();
+        return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
+    }
+
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date now = new Date();
@@ -26,13 +32,14 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public String getUsernameFromJwt(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -40,7 +47,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
             return false;
