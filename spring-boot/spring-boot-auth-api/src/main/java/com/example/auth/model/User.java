@@ -1,9 +1,13 @@
 package com.example.auth.model;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,29 +17,27 @@ import lombok.Setter;
 @Setter
 public class User {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "id")
-    private Long id;
+@Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
-    @Column(name = "last_name")
-    private String lastName;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns
-            = @JoinColumn(name = "user_id",
-            referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    private List<Role> roles;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles.stream()
+                .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                .collect(Collectors.toSet());
+    }
 }
+

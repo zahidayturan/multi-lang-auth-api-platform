@@ -18,12 +18,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-        
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .authorities(user.getRoles().stream()
-                        .map(role -> role.getRoleName()).toArray(String[]::new))
+                        .map(role -> "ROLE_" + role)
+                        .toArray(String[]::new))
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
@@ -31,4 +32,3 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
     }
 }
-
