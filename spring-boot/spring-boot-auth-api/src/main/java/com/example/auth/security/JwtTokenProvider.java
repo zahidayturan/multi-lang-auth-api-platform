@@ -2,6 +2,9 @@ package com.example.auth.security;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,8 @@ public class JwtTokenProvider {
 
     @Value("${app.jwtExpirationMs}")
     private int jwtExpirationMs;
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     private Key getSigningKey() {
         byte[] keyBytes = jwtSecret.getBytes();
@@ -37,12 +42,23 @@ public class JwtTokenProvider {
     }
 
     public String getUsernameFromJwt(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token expired: {}", token);
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", token);
+        } catch (UnsupportedJwtException e) {
+            logger.error("Unsupported JWT token: {}", token);
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT token compact of handler are invalid: {}", token);
+        }
+        return null;
     }
 
     public boolean validateToken(String authToken) {
@@ -50,6 +66,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+            logger.error("Invalid JWT token or expired token: {}", authToken, ex);
             return false;
         }
     }

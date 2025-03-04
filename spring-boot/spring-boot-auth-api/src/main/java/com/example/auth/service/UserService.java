@@ -27,7 +27,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            user.setRoles(Set.of("ROLE_USER"));
+            user.setRoles(Set.of("USER"));
         }
 
         return userRepository.save(user);
@@ -41,9 +41,9 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Set<String> validRoles = Set.of("ROLE_USER", "ROLE_ADMIN");
+        Set<String> validRoles = Set.of("USER", "ADMIN");
         roles = roles.stream()
-                .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                .map(role -> role.startsWith("ROLE_") ? role.substring(5) : role)
                 .filter(validRoles::contains)
                 .collect(Collectors.toSet());
 

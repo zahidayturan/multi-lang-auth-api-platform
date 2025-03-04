@@ -36,8 +36,9 @@ public class User {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles.stream()
-                .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                .map(role -> role.startsWith("ROLE_") ? role.substring(5) : role)
                 .collect(Collectors.toSet());
     }
+    
 }
 
