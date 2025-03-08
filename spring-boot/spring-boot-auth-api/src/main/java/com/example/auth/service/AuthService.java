@@ -2,7 +2,7 @@ package com.example.auth.service;
 
 import com.example.auth.model.User;
 import com.example.auth.repository.UserRepository;
-import com.example.auth.security.JwtTokenUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +24,13 @@ public class AuthService {
     
     
 
-    public String login(User user) {
-        User foundUser = userRepository.findByUsername(user.getUsername());
+    /*public String login(User user) {
+        Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
         
         if (foundUser != null && foundUser.getPassword().equals(user.getPassword())) {
             return JwtTokenUtil.generateToken(foundUser.getUsername());
         }
         return "Invalid credentials";
-    }
+    }*/
 }
 

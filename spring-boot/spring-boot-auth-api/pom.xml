@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.2</version>
+		<version>3.4.3</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auth</name>
+	<name>spring-boot-auth-api</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -41,7 +41,6 @@
 		<dependency>
     		<groupId>jakarta.persistence</groupId>
     		<artifactId>jakarta.persistence-api</artifactId>
-    		<version>3.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
