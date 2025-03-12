@@ -1,0 +1,25 @@
+# Node.js dependencies
+node_modules/
+
+# .env dosyasını dahil etme
+.env
+
+# Log dosyaları
+*.log
+
+# npm-debug.log dosyalarını dahil etme
+npm-debug.log*
+
+# MacOS sistem dosyaları
+.DS_Store
+
+# Test sonucu klasörleri
+coverage/
+
+# IDE/Editor dosyaları
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/
