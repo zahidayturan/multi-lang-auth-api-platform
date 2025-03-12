@@ -1,7 +1,6 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-const { authenticateJWT } = require('../middleware/authMiddleware');
+import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -45,7 +44,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
         { email: user.email, username: user.username },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: process.env.JWT_EXP }
     );
 
     res.status(200).json({ message: 'Login successful', token });
@@ -56,4 +55,4 @@ const protectedRoute = (req, res) => {
     res.status(200).json({ message: 'You have access to this protected route' });
 };
 
-module.exports = { register, login, protectedRoute };
+export { register, login, protectedRoute };

@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import { register, login, protectedRoute } from '../controllers/authController.js';
+import { authenticateJWT } from '../middleware/authMiddleware.js';
+
 const router = express.Router();
-const { register, login, protectedRoute } = require('../controllers/authController');
-const { authenticateJWT } = require('../middleware/authMiddleware');
 
 // User register route
 router.post('/register', register);
@@ -12,4 +13,4 @@ router.post('/login', login);
 // Protected route
 router.get('/protected', authenticateJWT, protectedRoute);
 
-module.exports = router;
+export default router;

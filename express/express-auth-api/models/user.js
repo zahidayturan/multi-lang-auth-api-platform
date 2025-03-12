@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';
 
 class User {
     constructor(username, email, password) {
@@ -8,7 +8,7 @@ class User {
     }
 
     static async findByEmail(email) {
-        // Veritabanı sorgusu
+        // Database query
         // return db.query('SELECT * FROM users WHERE email = ?', [email]);
         return null;
     }
@@ -23,9 +23,9 @@ class User {
     }
 
     static async addUser(user) {
-        // Veritabanına kullanıcı ekle
+        // Add user to the database
         // await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [user.username, user.email, user.password]);
     }
 }
 
-module.exports = User;
+export default User;

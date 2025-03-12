@@ -1,9 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoutes');
+import express from 'express';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import authRoutes from './routes/authRoutes.js';
 
-dotenv.config(); // Ortam değişkenleri
+dotenv.config(); // Load environment variables
 
 const app = express();
 const port = process.env.PORT || 3000;
