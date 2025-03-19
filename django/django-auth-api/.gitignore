@@ -1,0 +1,34 @@
+# General python files
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.env
+
+# Django and dependencies
+*.log
+db.sqlite3
+/media/
+/staticfiles/
+
+# VS Code files
+.vscode/
+
+# PyCharm files
+.idea/
+
+# Debug logs
+*.swp
+*.swo
+.coverage
+htmlcov/
+
+# Token and secret files
+.env
+config.json
+
+# MacOS files
+.DS_Store
