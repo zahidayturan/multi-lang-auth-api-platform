@@ -6,6 +6,9 @@ from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -20,3 +23,9 @@ class ProtectedView(APIView):
 
     def get(self, request):
         return Response({"message": f"Merhaba, {request.user.username}! Bu veriye yalnızca token ile erişilebilir."})
+    
+class AdminOnlyView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        return Response({"message": f"Merhaba admin {request.user.username}, bu endpoint sana özel!"})
