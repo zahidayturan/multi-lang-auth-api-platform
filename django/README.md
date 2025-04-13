@@ -54,8 +54,10 @@ django_auth_api/          # Project root directory
     ```env
     SECRET_KEY=<your-secret-key>
     DEBUG=True
+    ALLOWED_HOSTS=127.0.0.1,localhost
     JWT_ACCESS_TOKEN_LIFETIME=15  # in minutes
     JWT_REFRESH_TOKEN_LIFETIME=7  # in days
+    BASE_FRONT_URL=<your-front-url>
     ```
 
 5. **Apply migrations**:
@@ -175,6 +177,100 @@ django_auth_api/          # Project root directory
     - Status: `401 Unauthorized` (if token is invalid or missing)
 
 ---
+
+### **5.1. Create an Admin User**
+
+- **URL**: Terminal (command line)
+- **Method**: `python manage.py createsuperuser`
+- **Description**: Use Django's `createsuperuser` command to create an admin user.
+- **Command**:
+    ```bash
+    python manage.py createsuperuser
+    ```
+- **Requested Information**:
+    - **Username**: `admin`
+    - **Email**: `admin@example.com`
+    - **Password**: `password123`
+
+This user will be created with **is_staff=True** and **is_superuser=True**.
+
+---
+
+### **5.2. User Login (JWT Authentication)**
+
+- **URL**: `/api/users/login/`
+- **Method**: `POST`
+- **Description**: Allows existing users to log in and receive an **access** and **refresh** token.
+- **Request Body**:
+    ```json
+    {
+        "username": "admin",
+        "password": "password123"
+    }
+    ```
+- **Response**:
+    - Status: `200 OK`
+    - Body: JWT Tokens
+    ```json
+    {
+        "access": "access_token",
+        "refresh": "refresh_token"
+    }
+    ```
+    **Note**: Copy the **`access` token**, as we will use it to access the **admin-only** endpoint.
+
+---
+
+### **5.3. Access the Admin Endpoint**
+
+- **URL**: `/api/users/admin-only/`
+- **Method**: `GET`
+- **Description**: Admin-only endpoint.
+- **Request Headers**:
+    - **Authorization**: `Bearer <access-token>`
+    - Replace `<access-token>` with the **access token** you received earlier.
+- **Example Header**:
+    ```bash
+    Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+    ```
+- **Response** (Successful):
+    - Status: `200 OK`
+    - Body:
+    ```json
+    {
+        "message": "Hello admin admin, this endpoint is exclusive to you!"
+    }
+    ```
+
+---
+
+### **5.4. Try with a Non-Admin User**
+
+- **URL**: `/api/users/admin-only/`
+- **Method**: `GET`
+- **Description**: We will test the **403 Forbidden** error when trying to access the **admin-only** endpoint with a non-admin user.
+- **User Information**:
+    - **Username**: `normaluser`
+    - **Password**: `12345678`
+- **Request Body**:
+    ```json
+    {
+        "username": "normaluser",
+        "password": "12345678"
+    }
+    ```
+    After logging in, you'll receive the **access token** for this user.
+
+- **Response** (403 Forbidden):
+    - Status: `403 Forbidden`
+    - Body:
+    ```json
+    {
+        "detail": "You do not have permission to perform this action."
+    }
+    ```
+---
+
 
 ## **Settings**
 
