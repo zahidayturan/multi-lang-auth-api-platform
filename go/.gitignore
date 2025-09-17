@@ -1,0 +1,37 @@
+# Go binary files
+*.exe
+*.exe~
+*.out
+*.app
+
+# Go object files
+*.o
+*.a
+
+# Test binary files
+*_test.go
+
+# Dependency directories (with Go modules)
+vendor/
+
+# Go workspace files
+go.work
+go.work.sum
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# Log files
+*.log
