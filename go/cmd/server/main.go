@@ -3,6 +3,7 @@ package main
 import (
 	"auth-api/internal/config"
 	"auth-api/internal/handlers"
+	"auth-api/internal/middleware"
 	"auth-api/internal/services"
 	"auth-api/internal/store"
 	"github.com/gin-gonic/gin"
@@ -23,8 +24,9 @@ func main() {
 		JWTExpireIn: time.Hour, // 1 hour
 	}
 
-		// handler
+	// handlers
 	authHandler := &handlers.AuthHandler{AuthService: authService}
+	userHandler := &handlers.UserHandler{}
 
 	// router
 	r := gin.Default()
@@ -35,6 +37,19 @@ func main() {
 	})
 	r.POST("/register", authHandler.Register)
 	r.POST("/login", authHandler.Login)
+
+	// protected endpoints
+	authGroup := r.Group("/")
+	authGroup.Use(middleware.AuthMiddleware(authService))
+	{
+		authGroup.GET("/profile", userHandler.Profile)
+
+		adminGroup := authGroup.Group("/admin")
+		adminGroup.Use(middleware.RequireRole("admin"))
+		{
+			adminGroup.GET("/test", userHandler.AdminTest)
+		}
+	}
 
 	addr := ":" + cfg.Port
 	log.Println("Server running at http://localhost" + addr)
