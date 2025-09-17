@@ -17,6 +17,7 @@ func main() {
 
 	// DB init
 	store.InitDB(cfg.DatabaseURL)
+	store.SeedAdmin()
 
 	// auth service create
 	authService := &services.AuthService{

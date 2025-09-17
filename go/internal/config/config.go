@@ -11,6 +11,7 @@ type Config struct {
 	DatabaseURL string
 	JWTSecret   string
 	Port        string
+	AdminPassword string
 }
 
 func LoadConfig() *Config {
@@ -21,6 +22,7 @@ func LoadConfig() *Config {
 		DatabaseURL: getEnv("DATABASE_URL", ""),
 		JWTSecret:   getEnv("JWT_SECRET", "changeme"),
 		Port:        getEnv("PORT", "8080"),
+		AdminPassword: getEnv("ADMIN_PASSWORD", "admin123"),
 	}
 
 	if cfg.DatabaseURL == "" {
