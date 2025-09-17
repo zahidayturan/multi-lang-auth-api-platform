@@ -366,7 +366,3 @@ You can test the API using tools like **Postman** or **cURL**.
 This project provides a simple but effective way to handle user authentication in Django applications with JWT. It can be easily extended to include additional features like password reset, email verification, or user roles as needed.
 
 For any questions or contributions, feel free to open an issue or pull request!
-
----
-
-Let me know if you'd like any adjustments or further details!
