@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "GDHYZ+5fs3iagxYbqxnHOWbsXFEFl1Qu/+gX2/IyNo1kcwX9RvM22AxvV/KzPDC2GxluQhY0vkgNLDXfHLXiUA==",
+  "dgSpecHash": "rTa+hpziLHZ9f4TF5yoFrYgSG3EUyO6afOSwKG0rY8FKe4IA72UCr6N8DLJYYcsbBXVfJzt+ThGQDEJ3UV6EkA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ismet\\multi-lang-auth-api-platform\\dotnet\\auth-api\\auth-api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ismet\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\ismet\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.3\\microsoft.aspnetcore.openapi.7.0.3.nupkg.sha512",
     "C:\\Users\\ismet\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\ismet\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",

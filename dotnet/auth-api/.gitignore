@@ -1,0 +1,70 @@
+# .NET
+.vs/
+.vscode/
+.idea/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]istro/
+[Dd]ist/
+[Dd]ebug/Arm/
+[Dd]ebug/AnyCPU/
+[Dd]ebug/x64/
+[Dd]ebug/x86/
+[Dd]ebug-windows/
+[Dd]ebug-windows-x64/
+[Dd]ebug-windows-x86/
+[Dd]ebug-linux/
+[Dd]ebug-osx/
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer (Visual Studio for Mac)
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Core
+wwwroot/
+
+# VS Code directories
+.vscode/
+
+# Node.js modules (if you have front-end parts)
+node_modules/
+
+# JetBrains Rider
+.idea/
+
+# User-specific files (Rider/VS Code)
+.idea/
+.vscode/
+
+# Tye
+.tye/
+
+# NPM/Yarn logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Test results
+TestResults/
