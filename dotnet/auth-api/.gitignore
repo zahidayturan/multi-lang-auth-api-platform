@@ -68,3 +68,10 @@ yarn-error.log
 
 # Test results
 TestResults/
+
+# Local development settings
+appsettings.Development.json
+
+# Local development settings
+Migrations/
+.Migrations/
